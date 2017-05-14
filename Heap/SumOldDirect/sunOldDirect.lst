@@ -1,0 +1,216 @@
+MPASM  5.43                  SUNOLDDIRECT.ASM   7-27-2016  22:28:56         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;Program adds two 24-bit numbers
+                      00002 ;This prograv uses the old command systems (39 instruction)
+                      00003 ;Program with direct addressing
+                      00004 
+                      00005 ;*************************************************************
+                      00006 ;Summ saved in firstHH(msb), firstHL, firstll(lsb) and add reg firstC
+                      00007 
+                      00008 ;*************************************************************
+                      00009 
+                      00010         processor 16f84
+                      00011         include p16f84.inc
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F84 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2011 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      00205         LIST
+                      00012 
+                      00013 ;Memory init
+  0000000C            00014 firstHH         equ     0x0C            ;lsb
+  0000000D            00015 firstHL         equ     0x0D
+  0000000E            00016 firstLL         equ     0x0E            ;msb
+  0000000F            00017 firstC          equ 0x0F
+  00000011            00018 secondHH        equ     0x11            ;lsd
+  00000012            00019 secondHL        equ     0x12
+  00000013            00020 secondLL        equ     0x13
+                      00021 
+0000                  00022         org     0               
+0000   018C           00023                 clrf    firstHH
+0001   018D           00024                 clrf    firstHL
+0002   018E           00025                 clrf    firstLL
+0003   018F           00026                 clrf    firstC
+0004   308F           00027                 MOVLW   0x8F
+0005   008C           00028                 MOVWF   firstHH
+0006   30DD           00029                 MOVLW   0xDD
+0007   008D           00030                 MOVWF   firstHL
+0008   306F           00031                 MOVLW   0x6F
+0009   008E           00032                 MOVWF   firstLL
+000A   30C1           00033                 MOVLW   0xC1
+000B   0091           00034                 MOVWF   secondHH
+000C   304E           00035                 MOVLW   0x4E
+000D   0092           00036                 MOVWF   secondHL
+000E   3069           00037                 MOVLW   0x69
+000F   0093           00038                 MOVWF   secondLL
+                      00039 
+0010   0813           00040                 MOVF    secondLL, W
+0011   078E           00041                 ADDWF   firstLL, F
+0012   1C03           00042                 BTFSS   STATUS, 0
+0013   2817           00043                 GOTO    loop
+0014   0F8D           00044                 INCFSZ  firstHL, F
+MPASM  5.43                  SUNOLDDIRECT.ASM   7-27-2016  22:28:56         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0015   2817           00045                 GOTO    loop
+0016   0F8C           00046                 INCFSZ  firstHH, F
+0017                  00047 loop
+0017   0812           00048                 MOVF    secondHL, W
+0018   078D           00049                 ADDWF   firstHL, F
+0019   1803           00050                 BTFSC   STATUS, 0
+Message[305]: Using default destination of 1 (file).
+001A   0A8C           00051                 INCF    firstHH
+001B   0811           00052                 MOVF    secondHH, W
+001C   078C           00053                 ADDWF   firstHH, F
+001D   1803           00054                 BTFSC   STATUS, 0
+Message[305]: Using default destination of 1 (file).
+001E   0A8F           00055                 incf    firstC
+                      00056         end
+MPASM  5.43                  SUNOLDDIRECT.ASM   7-27-2016  22:28:56         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+MPASM  5.43                  SUNOLDDIRECT.ASM   7-27-2016  22:28:56         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84                           00000001
+__DEBUG                           1
+firstC                            0000000F
+firstHH                           0000000C
+firstHL                           0000000D
+firstLL                           0000000E
+loop                              00000017
+secondHH                          00000011
+secondHL                          00000012
+secondLL                          00000013
+MPASM  5.43                  SUNOLDDIRECT.ASM   7-27-2016  22:28:56         PAGE  5
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXX- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    31
+Program Memory Words Free:   993
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     2 reported,     0 suppressed
+
+
